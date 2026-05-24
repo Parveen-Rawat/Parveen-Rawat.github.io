@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0xXuan | Parveen Rawat</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#050508;--bg2:#0a0a12;--bg3:#0f0f1a;
+  --cyan:#00fff5;--magenta:#ff00cc;--yellow:#f5ff00;
+  --red:#ff003c;--green:#00ff88;--dim:#1a1a2e;
+  --text:#c8d0e0;--text-dim:#5a6080;
+  --mono:'Share Tech Mono',monospace;
+  --display:'Orbitron',sans-serif;
+  --body:'Rajdhani',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);overflow-x:hidden;cursor:none;}
+
+#cursor{position:fixed;width:20px;height:20px;border:1px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;}
+#cursor-dot{position:fixed;width:4px;height:4px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,245,0.013) 2px,rgba(0,255,245,0.013) 4px);pointer-events:none;z-index:1000;}
+
+.scanline-sweep{position:fixed;left:0;right:0;height:3px;background:rgba(0,255,245,0.05);pointer-events:none;z-index:998;animation:scanline 9s linear infinite;}
+@keyframes scanline{0%{top:-3px;}100%{top:100vh;}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;justify-content:space-between;align-items:center;padding:1rem 3rem;background:rgba(5,5,8,0.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,255,245,0.1);}
+.nav-logo{font-family:var(--display);font-size:0.9rem;color:var(--cyan);letter-spacing:0.12em;text-decoration:none;}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{color:var(--text-dim);text-decoration:none;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;transition:color 0.2s;position:relative;}
+.nav-links a::before{content:'> ';color:var(--cyan);opacity:0;transition:opacity 0.2s;}
+.nav-links a:hover{color:var(--cyan);}
+.nav-links a:hover::before{opacity:1;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden;}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,245,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,245,0.035) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 80% 60% at 50% 50%,black,transparent);}
+.hero-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,245,0.055) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+
+.hero-content{position:relative;z-index:2;max-width:940px;width:100%;}
+.hero-pre{font-size:0.72rem;color:var(--cyan);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:1rem;opacity:0.75;}
+.hero-ascii{font-family:var(--mono);font-size:clamp(0.38rem,1vw,0.65rem);color:var(--cyan);opacity:0.55;line-height:1.2;margin-bottom:1.5rem;white-space:pre;}
+
+.hero-name{font-family:var(--display);font-size:clamp(2.2rem,6.5vw,5rem);font-weight:900;line-height:1;color:#fff;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;position:relative;}
+.glitch{position:relative;display:inline-block;}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;opacity:0;}
+.glitch::before{color:var(--magenta);animation:glitch1 4.5s infinite;}
+.glitch::after{color:var(--cyan);animation:glitch2 4.5s infinite;}
+@keyframes glitch1{0%,90%,100%{opacity:0;transform:none;}91%{opacity:0.8;transform:translate(-3px,0) skewX(-5deg);clip-path:polygon(0 30%,100% 30%,100% 60%,0 60%);}93%{opacity:0;}95%{opacity:0.6;transform:translate(2px,0);clip-path:polygon(0 10%,100% 10%,100% 35%,0 35%);}97%{opacity:0;}}
+@keyframes glitch2{0%,90%,100%{opacity:0;transform:none;}92%{opacity:0.7;transform:translate(3px,0) skewX(3deg);clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%);}94%{opacity:0;}96%{opacity:0.5;transform:translate(-2px,0);clip-path:polygon(0 40%,100% 40%,100% 55%,0 55%);}98%{opacity:0;}}
+
+.hero-handle{font-family:var(--mono);font-size:clamp(0.9rem,2.5vw,1.6rem);color:var(--magenta);margin-bottom:1.5rem;letter-spacing:0.08em;}
+.t-cursor{display:inline-block;width:8px;height:1em;background:var(--magenta);animation:blink 1s step-end infinite;vertical-align:bottom;margin-left:2px;}
+@keyframes blink{0%,50%{opacity:1;}51%,100%{opacity:0;}}
+
+.hero-tagline{font-family:var(--body);font-size:1.05rem;color:var(--text-dim);margin-bottom:1.75rem;line-height:1.7;max-width:620px;}
+.hero-tagline span{color:var(--cyan);}
+
+.hacker-rank-badge{display:inline-flex;align-items:center;gap:0.6rem;padding:0.5rem 1.2rem;border:1px solid rgba(159,239,0,0.4);background:rgba(159,239,0,0.05);margin-bottom:1.75rem;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);}
+.hacker-rank-badge .dot{width:8px;height:8px;border-radius:50%;background:#9FEF00;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(159,239,0,0.4);}50%{box-shadow:0 0 0 6px rgba(159,239,0,0);}}
+.hacker-rank-badge span{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:#9FEF00;}
+
+.hero-badges{display:flex;flex-wrap:wrap;gap:0.65rem;margin-bottom:2.25rem;}
+.badge{padding:0.28rem 0.85rem;border:1px solid rgba(0,255,245,0.25);background:rgba(0,255,245,0.04);color:var(--cyan);font-size:0.67rem;letter-spacing:0.14em;text-transform:uppercase;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn{padding:0.65rem 1.7rem;font-family:var(--mono);font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;cursor:none;transition:all 0.2s;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);display:inline-block;}
+.btn-primary{background:var(--cyan);color:var(--bg);border:none;font-weight:bold;}
+.btn-primary:hover{background:#fff;box-shadow:0 0 22px var(--cyan);}
+.btn-ghost{background:transparent;color:var(--cyan);border:1px solid var(--cyan);}
+.btn-ghost:hover{background:rgba(0,255,245,0.07);box-shadow:0 0 16px rgba(0,255,245,0.25);}
+.btn-magenta{background:transparent;color:var(--magenta);border:1px solid var(--magenta);}
+.btn-magenta:hover{background:rgba(255,0,204,0.07);box-shadow:0 0 16px rgba(255,0,204,0.25);}
+
+.status-bar{position:absolute;bottom:2rem;left:0;right:0;display:flex;justify-content:center;gap:2rem;font-size:0.62rem;color:var(--text-dim);letter-spacing:0.1em;z-index:2;flex-wrap:wrap;}
+.status-bar span span{color:var(--green);}
+
+/* SECTIONS */
+section.sec{padding:5.5rem 2rem;max-width:1100px;margin:0 auto;position:relative;}
+.section-header{margin-bottom:2.75rem;}
+.section-label{font-size:0.62rem;color:var(--magenta);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:0.4rem;}
+.section-label::before{content:'// ';color:var(--text-dim);}
+.section-title{font-family:var(--display);font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.06em;position:relative;display:inline-block;}
+.section-title::after{content:'';position:absolute;bottom:-7px;left:0;width:55%;height:2px;background:linear-gradient(90deg,var(--cyan),transparent);}
+
+.divider{border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,245,0.12),transparent);margin:0;}
+
+/* WHOAMI */
+.about-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:3rem;align-items:start;}
+.terminal-box{background:var(--bg2);border:1px solid rgba(0,255,245,0.14);border-radius:4px;overflow:hidden;position:sticky;top:5.5rem;}
+.terminal-bar{background:var(--bg3);padding:0.55rem 1rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid rgba(0,255,245,0.08);}
+.t-dot{width:10px;height:10px;border-radius:50%;}
+.t-red{background:var(--red);}
+.t-yellow{background:var(--yellow);}
+.t-green{background:var(--green);}
+.t-title-bar{font-size:0.62rem;color:var(--text-dim);margin-left:auto;letter-spacing:0.1em;}
+.terminal-body{padding:1.4rem;font-size:0.78rem;line-height:2;}
+.t-prompt{color:var(--cyan);}
+.t-cmd{color:#fff;}
+.t-out{color:var(--text);padding-left:1rem;}
+.t-out.c{color:var(--green);}
+.t-out.m{color:var(--magenta);}
+.t-out.y{color:var(--yellow);}
+.t-out.r{color:var(--red);}
+
+.about-text{font-family:var(--body);font-size:1rem;line-height:1.85;color:var(--text);}
+.about-text p{margin-bottom:1.1rem;}
+.about-text strong{color:var(--cyan);font-weight:600;}
+
+.about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-top:2rem;}
+.stat-box{border:1px solid rgba(0,255,245,0.12);background:rgba(0,255,245,0.03);padding:0.9rem;text-align:center;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+.stat-num{font-family:var(--display);font-size:1.6rem;color:var(--cyan);font-weight:700;display:block;}
+.stat-label{font-size:0.58rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem;}
+.skill-category{border:1px solid rgba(0,255,245,0.09);background:var(--bg2);padding:1.4rem;position:relative;overflow:hidden;}
+.skill-category::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--cyan),var(--magenta));}
+.skill-cat-title{font-family:var(--display);font-size:0.65rem;color:var(--magenta);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.9rem;padding-left:0.75rem;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:0.45rem;padding-left:0.75rem;}
+.skill-tag{padding:0.22rem 0.55rem;background:rgba(0,255,245,0.04);border:1px solid rgba(0,255,245,0.18);font-size:0.7rem;color:var(--text);letter-spacing:0.04em;transition:all 0.2s;}
+.skill-tag:hover{background:rgba(0,255,245,0.1);color:var(--cyan);border-color:var(--cyan);}
+
+/* CERTS */
+.cert-section-label{font-family:var(--display);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase;margin:2.5rem 0 1rem;border-bottom:1px solid rgba(0,255,245,0.08);padding-bottom:0.5rem;}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;}
+.cert-card{border:1px solid rgba(255,0,204,0.18);background:rgba(255,0,204,0.03);padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:0.9rem;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all 0.2s;}
+.cert-card:hover{border-color:var(--magenta);background:rgba(255,0,204,0.06);}
+.cert-card.pursuing{border-color:rgba(0,255,245,0.25);background:rgba(0,255,245,0.03);}
+.cert-card.pursuing:hover{border-color:var(--cyan);}
+.cert-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px;}
+.cert-info{flex:1;}
+.cert-name{font-family:var(--display);font-size:0.72rem;color:var(--magenta);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:0.2rem;line-height:1.3;}
+.cert-card.pursuing .cert-name{color:var(--cyan);}
+.cert-issuer{font-size:0.62rem;color:var(--text-dim);}
+.cert-badge{font-size:0.55rem;padding:0.12rem 0.4rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid;margin-top:0.3rem;display:inline-block;}
+.badge-done{color:var(--green);border-color:rgba(0,255,136,0.3);}
+.badge-progress{color:var(--yellow);border-color:rgba(245,255,0,0.3);}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.4rem;}
+.project-card{border:1px solid rgba(0,255,245,0.09);background:var(--bg2);padding:1.65rem;position:relative;overflow:hidden;transition:all 0.3s;text-decoration:none;display:block;color:inherit;cursor:none;}
+.project-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,245,0.04),transparent);opacity:0;transition:opacity 0.3s;}
+.project-card:hover{border-color:rgba(0,255,245,0.35);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,255,245,0.07);}
+.project-card:hover::after{opacity:1;}
+.project-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.9rem;}
+.project-lang{font-size:0.62rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;border:1px solid rgba(0,255,245,0.14);padding:0.18rem 0.5rem;}
+.project-status{font-size:0.58rem;padding:0.18rem 0.5rem;letter-spacing:0.1em;text-transform:uppercase;}
+.status-active{color:var(--green);border:1px solid rgba(0,255,136,0.35);background:rgba(0,255,136,0.05);}
+.status-wip{color:var(--yellow);border:1px solid rgba(245,255,0,0.3);background:rgba(245,255,0,0.04);}
+.project-name{font-family:var(--display);font-size:1rem;color:var(--cyan);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.45rem;}
+.project-desc{font-family:var(--body);font-size:0.9rem;color:var(--text);line-height:1.6;margin-bottom:1.1rem;}
+.project-tags{display:flex;flex-wrap:wrap;gap:0.38rem;margin-bottom:1rem;}
+.project-tag{font-size:0.6rem;color:var(--magenta);background:rgba(255,0,204,0.06);border:1px solid rgba(255,0,204,0.18);padding:0.13rem 0.42rem;letter-spacing:0.07em;}
+.project-link{font-size:0.65rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(0,255,245,0.2);transition:color 0.2s;}
+.project-link:hover{color:var(--cyan);}
+
+/* CTF */
+.ctf-intro{font-family:var(--body);font-size:0.95rem;color:var(--text-dim);margin-bottom:1.75rem;line-height:1.6;}
+.ctf-intro span{color:var(--cyan);}
+.ctf-platforms{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;}
+.platform-pill{padding:0.45rem 1.2rem;border:1px solid rgba(0,255,245,0.18);background:rgba(0,255,245,0.04);font-size:0.7rem;color:var(--text);letter-spacing:0.1em;text-transform:uppercase;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);display:flex;align-items:center;gap:0.5rem;}
+.platform-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);}
+
+.ctf-coming{border:1px dashed rgba(0,255,245,0.15);padding:2.5rem;text-align:center;background:rgba(0,255,245,0.02);}
+.ctf-coming-title{font-family:var(--display);font-size:0.8rem;color:var(--cyan);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.6rem;}
+.ctf-coming-sub{font-family:var(--body);font-size:0.9rem;color:var(--text-dim);}
+
+/* BLOG */
+.blog-coming{border:1px dashed rgba(255,0,204,0.15);padding:3rem;text-align:center;background:rgba(255,0,204,0.02);}
+.blog-coming-title{font-family:var(--display);font-size:0.8rem;color:var(--magenta);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.6rem;}
+.blog-sub{font-family:var(--body);font-size:0.9rem;color:var(--text-dim);margin-bottom:1rem;}
+.blog-topics{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-top:1.25rem;}
+.blog-topic{font-size:0.65rem;color:var(--magenta);background:rgba(255,0,204,0.06);border:1px solid rgba(255,0,204,0.18);padding:0.2rem 0.6rem;letter-spacing:0.08em;}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(0,255,245,0.09);padding:3rem 2rem;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem;}
+.footer-left{font-size:0.68rem;color:var(--text-dim);line-height:1.9;}
+.footer-handle{font-family:var(--display);font-size:0.85rem;color:var(--cyan);display:block;margin-bottom:0.2rem;}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.footer-link{font-size:0.68rem;color:var(--text-dim);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;display:flex;align-items:center;gap:0.4rem;}
+.footer-link:hover{color:var(--cyan);}
+.footer-link .ext{font-size:0.55rem;opacity:0.5;}
+
+/* SCROLL FADE */
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity 0.55s ease,transform 0.55s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:1rem;}
+  .nav-links{gap:1rem;}
+  .about-grid{grid-template-columns:1fr;}
+  .terminal-box{position:static;}
+  .about-stats{grid-template-columns:repeat(2,1fr);}
+  footer{flex-direction:column;text-align:center;}
+  .footer-links{justify-content:center;}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-dot"></div>
+<div class="scanline-sweep"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">0xXuan</a>
+  <ul class="nav-links">
+    <li><a href="#whoami">whoami</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#ctf">ctf</a></li>
+    <li><a href="#blog">blog</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-pre">root@kali:~ $ ./boot_sequence.sh --user=0xXuan</div>
+    <pre class="hero-ascii">
+   ___       __   ___    __       __  __
+  / _ \      \ \ / / |  | |  /\   | \ | |
+ | | | |_  __ \ V /| |  | | /  \  |  \| |
+ | | | \ \/ /  > < | |  | |/ /\ \ | . ` |
+ | |_| |>  <  / . \| |__| / ____ \| |\  |
+  \___//_/\_\/_/ \_\\____/_/    \_\_| \_|
+                                         
+                                         
+    </pre>
+    <h1 class="hero-name">
+      <span class="glitch" data-text="Parveen Rawat">Parveen Rawat</span>
+    </h1>
+    <div class="hero-handle">// <span id="typed-handle"></span><span class="t-cursor"></span></div>
+
+    <div class="hacker-rank-badge">
+      <span class="dot"></span>
+      <span>HTB Rank: Hacker &nbsp;·&nbsp; Shadow Sect &nbsp;·&nbsp; 0xXuan</span>
+    </div>
+
+    <p class="hero-tagline">
+      4th year B.Tech CS student going deep into <span>offensive security</span>.<br>
+      Building <span>ToTheRoot</span>, chasing <span>CPTS</span>, breaking machines on <span>HackTheBox</span>,<br>
+      and learning malware analysis one shellcode at a time.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">Penetration Testing</span>
+      <span class="badge">Active Directory</span>
+      <span class="badge">AI-Assisted Recon</span>
+      <span class="badge">OSINT</span>
+      <span class="badge">Web Security</span>
+      <span class="badge">Malware Dev</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="https://github.com/Parveen-Rawat" target="_blank" class="btn btn-ghost">GitHub</a>
+      <a href="https://profile.hackthebox.com/profile/019c3bed-10d0-72d1-833f-6b8092e23741" target="_blank" class="btn btn-magenta">HTB Profile</a>
+    </div>
+  </div>
+  <div class="status-bar">
+    <span>STATUS: <span>ONLINE</span></span>
+    <span>RANK: <span>HACKER</span></span>
+    <span>TEAM: <span>SHADOW SECT</span></span>
+    <span>TARGET: <span>CPTS · 2025</span></span>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WHOAMI -->
+<section id="whoami" class="sec">
+  <div class="section-header fade-in">
+    <div class="section-label">identity</div>
+    <h2 class="section-title">whoami</h2>
+  </div>
+  <div class="about-grid">
+    <div class="terminal-box fade-in">
+      <div class="terminal-bar">
+        <span class="t-dot t-red"></span>
+        <span class="t-dot t-yellow"></span>
+        <span class="t-dot t-green"></span>
+        <span class="t-title-bar">0xXuan@kali: ~</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-prompt">0xXuan@kali</span>:<span style="color:var(--magenta)">~</span>$ <span class="t-cmd">id</span></div>
+        <div class="t-out c">Parveen Rawat (0xXuan)</div>
+        <div class="t-out">4th Year B.Tech · Computer Science</div>
+        <div class="t-out m">HTB Rank: Hacker 🎯</div>
+        <br>
+        <div><span class="t-prompt">0xXuan@kali</span>:<span style="color:var(--magenta)">~</span>$ <span class="t-cmd">cat current_ops.txt</span></div>
+        <div class="t-out">→ Building ToTheRoot (AI Pentest Framework)</div>
+        <div class="t-out">→ HTB Machines + Labs</div>
+        <div class="t-out">→ CPTS Prep (Exam: July-Aug 2025)</div>
+        <div class="t-out">→ PortSwigger Web Security Labs</div>
+        <div class="t-out">→ Malware Analysis / Development</div>
+        <br>
+        <div><span class="t-prompt">0xXuan@kali</span>:<span style="color:var(--magenta)">~</span>$ <span class="t-cmd">uname -a</span></div>
+        <div class="t-out y">Kali Linux · Python · Bash</div>
+        <div class="t-out y">WSL2 · Ollama · ChromaDB</div>
+        <br>
+        <div><span class="t-prompt">0xXuan@kali</span>:<span style="color:var(--magenta)">~</span>$ <span class="t-cursor" style="background:var(--cyan)"></span></div>
+      </div>
+    </div>
+
+    <div class="about-text fade-in">
+      <p>
+        I'm <strong>Parveen Rawat</strong> — cybersecurity student, offensive security practitioner,
+        and the person behind the handle <strong>0xXuan</strong>. Currently in my 4th year of B.Tech
+        in Computer Science.
+      </p>
+      <p>
+        I've been grinding <strong>HackTheBox</strong> and recently earned the <strong>Hacker rank</strong>
+        — solving machines, labs, and challenges across the platform as part of <strong>Shadow Sect</strong>.
+        My CPTS exam is locked in for July–August 2025.
+      </p>
+      <p>
+        On the build side, I'm developing <strong>ToTheRoot</strong> — an AI-assisted penetration
+        testing automation framework that runs entirely locally. No cloud. No exfiltration. Just a
+        RAG pipeline over CPTS notes, Ollama, and ChromaDB doing actual recon work.
+      </p>
+      <p>
+        Currently expanding into <strong>web security</strong> through PortSwigger Academy,
+        sharpening my Python and Bash scripting, and taking my first real steps into
+        <strong>malware analysis and development</strong>.
+      </p>
+      <div class="about-stats">
+        <div class="stat-box">
+          <span class="stat-num">4</span>
+          <span class="stat-label">Certs</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">7</span>
+          <span class="stat-label">Repos</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">5+</span>
+          <span class="stat-label">Platforms</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Curiosity</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS & CERTS -->
+<section id="skills" class="sec">
+  <div class="section-header fade-in">
+    <div class="section-label">capabilities & credentials</div>
+    <h2 class="section-title">Skills & Certs</h2>
+  </div>
+
+  <div class="skills-grid fade-in">
+    <div class="skill-category">
+      <div class="skill-cat-title">Offensive Security</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Nmap</span><span class="skill-tag">Metasploit</span>
+        <span class="skill-tag">Burp Suite</span><span class="skill-tag">Gobuster</span>
+        <span class="skill-tag">Nikto</span><span class="skill-tag">SQLmap</span>
+        <span class="skill-tag">Hydra</span><span class="skill-tag">Netcat</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">Active Directory</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Kerberoasting</span><span class="skill-tag">DCSync</span>
+        <span class="skill-tag">BloodHound</span><span class="skill-tag">Rubeus</span>
+        <span class="skill-tag">PowerView</span><span class="skill-tag">Impacket</span>
+        <span class="skill-tag">CrackMapExec</span><span class="skill-tag">ACL Abuse</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">Web Security</div>
+      <div class="skill-tags">
+        <span class="skill-tag">SQLi</span><span class="skill-tag">XSS</span>
+        <span class="skill-tag">SSRF</span><span class="skill-tag">IDOR</span>
+        <span class="skill-tag">PortSwigger Labs</span><span class="skill-tag">Burp Suite Pro</span>
+        <span class="skill-tag">OWASP Top 10</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">AI / Automation</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span><span class="skill-tag">Bash</span>
+        <span class="skill-tag">ChromaDB</span><span class="skill-tag">Ollama</span>
+        <span class="skill-tag">RAG Pipelines</span><span class="skill-tag">LLM Prompting</span>
+        <span class="skill-tag">WSL2</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">OSINT & Recon</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Google Dorking</span><span class="skill-tag">SerpAPI</span>
+        <span class="skill-tag">theHarvester</span><span class="skill-tag">Shodan</span>
+        <span class="skill-tag">Maltego</span><span class="skill-tag">OSINT Framework</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title">Forensics & Malware</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Wireshark</span><span class="skill-tag">Binwalk</span>
+        <span class="skill-tag">Steghide</span><span class="skill-tag">Git Forensics</span>
+        <span class="skill-tag">PCAP Analysis</span><span class="skill-tag">Malware Dev (Learning)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cert-section-label fade-in">Certifications · Earned</div>
+  <div class="cert-grid fade-in">
+    <div class="cert-card">
+      <span class="cert-icon">🔐</span>
+      <div class="cert-info">
+        <span class="cert-name">Google Cybersecurity Certificate</span>
+        <span class="cert-issuer">Google · Coursera</span>
+        <span class="cert-badge badge-done">Completed</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <span class="cert-icon">⚔️</span>
+      <div class="cert-info">
+        <span class="cert-name">AD-RTS</span>
+        <span class="cert-issuer">CEWL · Active Directory Red Team Specialist</span>
+        <span class="cert-badge badge-done">Completed</span>
+      </div>
+    </div>
+    <div class="cert-card">
+      <span class="cert-icon">🦁</span>
+      <div class="cert-info">
+        <span class="cert-name">CPTE</span>
+        <span class="cert-issuer">Palo Alto Networks · Certified Penetration Testing Engineer 2025</span>
+        <span class="cert-badge badge-done">Completed</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cert-section-label fade-in">Certifications · In Progress</div>
+  <div class="cert-grid fade-in">
+    <div class="cert-card pursuing">
+      <span class="cert-icon">🎯</span>
+      <div class="cert-info">
+        <span class="cert-name">CPTS</span>
+        <span class="cert-issuer">HackTheBox · Certified Penetration Testing Specialist</span>
+        <span class="cert-badge badge-progress">Exam: Jul–Aug 2025</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROJECTS -->
+<section id="projects" class="sec">
+  <div class="section-header fade-in">
+    <div class="section-label">builds</div>
+    <h2 class="section-title">Projects</h2>
+  </div>
+
+  <div class="projects-grid">
+    <a href="https://github.com/Parveen-Rawat/ToTheRoot" target="_blank" class="project-card fade-in">
+      <div class="project-top">
+        <span class="project-lang">Python · LLM · RAG</span>
+        <span class="project-status status-active">Active</span>
+      </div>
+      <div class="project-name">ToTheRoot</div>
+      <p class="project-desc">AI-assisted penetration testing automation framework. Fully local architecture — ChromaDB vector store + Ollama LLM + RAG pipeline trained on CPTS notes. No cloud. No data exfiltration.</p>
+      <div class="project-tags">
+        <span class="project-tag">#chromadb</span><span class="project-tag">#ollama</span>
+        <span class="project-tag">#nmap</span><span class="project-tag">#rag</span>
+        <span class="project-tag">#wsl2</span><span class="project-tag">#automation</span>
+      </div>
+      <span class="project-link">github.com/Parveen-Rawat/ToTheRoot ↗</span>
+    </a>
+
+    <a href="https://github.com/Parveen-Rawat/AI-and-LLM-VAPT-" target="_blank" class="project-card fade-in">
+      <div class="project-top">
+        <span class="project-lang">Python · LLM Security</span>
+        <span class="project-status status-active">Active</span>
+      </div>
+      <div class="project-name">AI & LLM VAPT</div>
+      <p class="project-desc">Research notes, practice exercises, and hands-on work for AI/LLM Vulnerability Assessment and Penetration Testing. Covers prompt injection, model abuse, and AI attack surface mapping.</p>
+      <div class="project-tags">
+        <span class="project-tag">#llm</span><span class="project-tag">#vapt</span>
+        <span class="project-tag">#prompt-injection</span><span class="project-tag">#ai-security</span>
+      </div>
+      <span class="project-link">github.com/Parveen-Rawat/AI-and-LLM-VAPT- ↗</span>
+    </a>
+
+    <a href="https://github.com/Parveen-Rawat/Network-Security-Assessment" target="_blank" class="project-card fade-in">
+      <div class="project-top">
+        <span class="project-lang">Python</span>
+        <span class="project-status status-active">Active</span>
+      </div>
+      <div class="project-name">Network Security Assessment</div>
+      <p class="project-desc">Custom Python toolkit for network reconnaissance — OS detection, banner grabbing, and port scanning. Built from scratch as a hands-on learning exercise in network internals.</p>
+      <div class="project-tags">
+        <span class="project-tag">#nmap</span><span class="project-tag">#recon</span>
+        <span class="project-tag">#banner-grabbing</span><span class="project-tag">#python</span>
+      </div>
+      <span class="project-link">github.com/Parveen-Rawat/Network-Security-Assessment ↗</span>
+    </a>
+
+    <a href="https://github.com/Parveen-Rawat/Vulnerable-Web-Application-Attack-Simulation" target="_blank" class="project-card fade-in">
+      <div class="project-top">
+        <span class="project-lang">HTML · JS</span>
+        <span class="project-status status-wip">WIP</span>
+      </div>
+      <div class="project-name">Vulnerable Web App Simulation</div>
+      <p class="project-desc">A deliberately vulnerable web application for attack simulation and practice. Designed to demonstrate and test common web vulnerabilities in a controlled lab environment.</p>
+      <div class="project-tags">
+        <span class="project-tag">#web-sec</span><span class="project-tag">#sqli</span>
+        <span class="project-tag">#xss</span><span class="project-tag">#dvwa-style</span>
+      </div>
+      <span class="project-link">github.com/Parveen-Rawat/Vulnerable-Web-Application-Attack-Simulation ↗</span>
+    </a>
+
+    <a href="https://github.com/Parveen-Rawat/HTB_Writeups" target="_blank" class="project-card fade-in">
+      <div class="project-top">
+        <span class="project-lang">Markdown · Docs</span>
+        <span class="project-status status-active">Active</span>
+      </div>
+      <div class="project-name">HTB Writeups</div>
+      <p class="project-desc">Writeups and notes for HackTheBox machines, labs, and challenges — covering offensive and defensive techniques. Living document, updated as machines get retired.</p>
+      <div class="project-tags">
+        <span class="project-tag">#htb</span><span class="project-tag">#writeups</span>
+        <span class="project-tag">#offensive</span><span class="project-tag">#notes</span>
+      </div>
+      <span class="project-link">github.com/Parveen-Rawat/HTB_Writeups ↗</span>
+    </a>
+
+    <a href="https://github.com/Parveen-Rawat/PortSwigger" target="_blank" class="project-card fade-in">
+      <div class="project-top">
+        <span class="project-lang">Markdown · Web Sec</span>
+        <span class="project-status status-active">Active</span>
+      </div>
+      <div class="project-name">PortSwigger Notes</div>
+      <p class="project-desc">Personal notes, solved labs, and CTF writeups from PortSwigger Web Security Academy. Covers SQLi, XSS, SSRF, authentication flaws, and more — organized by topic.</p>
+      <div class="project-tags">
+        <span class="project-tag">#portswigger</span><span class="project-tag">#web-sec</span>
+        <span class="project-tag">#burpsuite</span><span class="project-tag">#labs</span>
+      </div>
+      <span class="project-link">github.com/Parveen-Rawat/PortSwigger ↗</span>
+    </a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTF -->
+<section id="ctf" class="sec">
+  <div class="section-header fade-in">
+    <div class="section-label">competition logs</div>
+    <h2 class="section-title">CTF & Labs</h2>
+  </div>
+
+  <p class="ctf-intro fade-in">
+    Active across <span>5 platforms</span> — machines, labs, and CTF competitions.
+    Writeups are being documented and will be published here as challenges retire.
+  </p>
+
+  <div class="ctf-platforms fade-in">
+    <div class="platform-pill"><span class="dot"></span>HackTheBox · Hacker Rank</div>
+    <div class="platform-pill"><span class="dot"></span>TryHackMe</div>
+    <div class="platform-pill"><span class="dot"></span>PortSwigger Academy</div>
+    <div class="platform-pill"><span class="dot"></span>picoCTF</div>
+    <div class="platform-pill"><span class="dot"></span>Pentathon</div>
+  </div>
+
+  <div class="ctf-coming fade-in">
+    <div class="ctf-coming-title">// Writeups Loading...</div>
+    <p class="ctf-coming-sub">
+      Documenting solved machines, labs, and CTF challenges.<br>
+      Writeups will be published here as content goes live on GitHub.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BLOG -->
+<section id="blog" class="sec">
+  <div class="section-header fade-in">
+    <div class="section-label">research & writeups</div>
+    <h2 class="section-title">Blog</h2>
+  </div>
+
+  <div class="blog-coming fade-in">
+    <div class="blog-coming-title">// Posts Coming Soon</div>
+    <p class="blog-sub">
+      Writing up research, project breakdowns, and technique walkthroughs.<br>
+      Posts will publish to GitHub and sync here automatically.
+    </p>
+    <p class="blog-sub" style="font-size:0.8rem;">Topics in the pipeline:</p>
+    <div class="blog-topics">
+      <span class="blog-topic">Building ToTheRoot: Local LLM + RAG for Pentest Automation</span>
+      <span class="blog-topic">AI & LLM VAPT: Attack Surface Mapping</span>
+      <span class="blog-topic">AD Attack Chain: Spray → Kerberoast → DCSync</span>
+      <span class="blog-topic">HTB Machine Writeups</span>
+      <span class="blog-topic">PortSwigger Lab Walkthroughs</span>
+      <span class="blog-topic">Malware Analysis: Getting Started</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="fade-in">
+  <div class="footer-left">
+    <span class="footer-handle">0xXuan</span>
+    <span>Parveen Rawat · B.Tech CS · India</span>
+    <span style="font-size:0.6rem;color:var(--text-dim);margin-top:0.2rem;display:block;">
+      root@kali:~ $ echo <span style="color:var(--cyan)">"Happy hacking"</span>
+    </span>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/Parveen-Rawat" target="_blank" class="footer-link">GitHub <span class="ext">↗</span></a>
+    <a href="https://www.linkedin.com/in/parveenrawat/" target="_blank" class="footer-link">LinkedIn <span class="ext">↗</span></a>
+    <a href="https://profile.hackthebox.com/profile/019c3bed-10d0-72d1-833f-6b8092e23741" target="_blank" class="footer-link">HackTheBox <span class="ext">↗</span></a>
+  </div>
+</footer>
+
+<script>
+// Cursor
+const cursor=document.getElementById('cursor'),dot=document.getElementById('cursor-dot');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+(function a(){cx+=(mx-cx)*0.14;cy+=(my-cy)*0.14;cursor.style.left=cx+'px';cursor.style.top=cy+'px';requestAnimationFrame(a);})();
+
+// Typed handle
+const phrases=['0xXuan','Penetration Tester','CTF Player','CPTS Candidate','root@everywhere','Hacker Rank · HTB'];
+let pi=0,ci=0,del=false;
+const el=document.getElementById('typed-handle');
+function type(){
+  const w=phrases[pi];
+  if(!del){el.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(type,1900);return;}}
+  else{el.textContent=w.slice(0,--ci);if(ci===0){del=false;pi=(pi+1)%phrases.length;}}
+  setTimeout(type,del?55:85);
+}
+type();
+
+// Scroll fade in
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+// Nav active
+const secs=document.querySelectorAll('section[id]'),links=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  secs.forEach(s=>{if(window.scrollY>=s.offsetTop-220)cur=s.getAttribute('id');});
+  links.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--cyan)':'';});
+});
+
+// Periodic hero glitch
+setInterval(()=>{
+  const g=document.querySelector('.hero-name .glitch');
+  g.style.textShadow=`${Math.random()*6-3}px 0 var(--magenta),${Math.random()*6-3}px 0 var(--cyan)`;
+  setTimeout(()=>{g.style.textShadow='none';},75);
+  setTimeout(()=>{g.style.textShadow=`${Math.random()*4-2}px 0 var(--cyan)`;setTimeout(()=>{g.style.textShadow='none';},45);},115);
+},3800);
+</script>
+</body>
+</html>
